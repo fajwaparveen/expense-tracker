@@ -38,7 +38,10 @@ export default function ExpenceTracker(){
     <div>
     <h1>Expense Tracker</h1>
       <p>Track your income and expenses.</p>
-      <h2>Total: ${total} </h2>
+      <div className="total-card">
+        <p className="total-label">Total Spent</p>
+        <h2 className="total-amount">${total}</h2>
+      </div>
       
       <input
         type="text"
