@@ -120,14 +120,14 @@ export default function ExpenseTrackerPage() {
 
         <section className="intro" aria-labelledby="page-title">
           <div>
-            <p className="eyebrow">Your everyday money log</p>
+            <p className="eyebrow">Expense Tracker</p>
             <h1 id="page-title">
-              Small notes.
-              <br />
-              <em>Clearer days.</em>
+              Track your spending 
+              
+              
             </h1>
             <p className="intro-copy">
-              Keep the little purchases visible, without turning your day into a spreadsheet.
+              Add expenses below and see your totals update instantly.
             </p>
           </div>
           <div className="total-card" aria-label="Expense summary">
@@ -229,7 +229,7 @@ export default function ExpenseTrackerPage() {
                 <div className="empty-illustration" aria-hidden="true">
                   <Sparkles size={27} strokeWidth={1.8} />
                 </div>
-                <h3>A clean slate</h3>
+                <h3>No expense yet</h3>
                 <p>Add your first expense and it will appear here, ready when you need it.</p>
               </div>
             ) : (
