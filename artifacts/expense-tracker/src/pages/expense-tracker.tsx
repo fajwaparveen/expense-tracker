@@ -130,19 +130,12 @@ export default function ExpenseTrackerPage() {
               Keep the little purchases visible, without turning your day into a spreadsheet.
             </p>
           </div>
-          <aside className="balance-card" aria-label="Expense summary">
-            <p className="balance-label">Total spent</p>
-            <strong className="balance-amount" data-testid="text-total-amount">
+          <div className="total-card" aria-label="Expense summary">
+            <p className="total-label">Total Spent</p>
+            <h2 className="total-amount" data-testid="text-total-amount">
               {formatCurrency(total)}
-            </strong>
-            <div className="balance-meta">
-              <CircleDollarSign size={16} aria-hidden="true" />
-              <span>
-                <strong data-testid="text-expense-count">{expenses.length}</strong>{' '}
-                {expenses.length === 1 ? 'expense' : 'expenses'} logged
-              </span>
-            </div>
-          </aside>
+            </h2>
+          </div>
         </section>
 
         <section className="workspace" aria-label="Expense tracker workspace">

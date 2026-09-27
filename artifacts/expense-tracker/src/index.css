@@ -348,3 +348,25 @@
   .category-icon { width: 2.4rem; height: 2.4rem; }
   .expense-category { display: none; }
 }
+
+.total-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.total-label {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.total-amount {
+  font-size: 36px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 4px 0 0 0;
+}
