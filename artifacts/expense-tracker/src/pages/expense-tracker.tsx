@@ -49,7 +49,7 @@ function formatCurrency(amount: number) {
 
 export default function ExpenseTrackerPage() {
   const [expenses, setExpenses] = useState<Expense[]>(() => {
-    const saved = localStorage.getItem('expenses');
+    const saved = localStorage.getItem('my-expenses');
     return saved ? JSON.parse(saved) : [];
   });
   const [description, setDescription] = useState('');
@@ -62,7 +62,7 @@ export default function ExpenseTrackerPage() {
     [expenses],
   );
   useEffect(() => {
-    localStorage.setItem('expenses' , JSON.stringify(expenses));
+    localStorage.setItem('my-expenses' , JSON.stringify(expenses));
   }, [expenses]);
   
   const addExpense = (event: FormEvent<HTMLFormElement>) => {
