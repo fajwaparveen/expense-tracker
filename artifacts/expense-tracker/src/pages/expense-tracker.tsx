@@ -40,7 +40,7 @@ const categoryConfig: Record<Category, CategoryConfig> = {
 
 const currencyFormatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
-  currency: 'USD',
+  currency: 'INR',
 });
 
 function formatCurrency(amount: number) {
@@ -169,7 +169,7 @@ export default function ExpenseTrackerPage() {
             <label className="field">
               <span className="field-label">How much?</span>
               <span className="input-with-prefix">
-                <span className="input-prefix" aria-hidden="true">$</span>
+                <span className="input-prefix" aria-hidden="true">INR</span>
                 <input
                   className="field-input"
                   data-testid="input-amount"
