@@ -1,4 +1,4 @@
-import { useMemo, useState, type CSSProperties, type FormEvent } from 'react';
+import { useEffect, useMemo, useState, type CSSProperties, type FormEvent } from 'react';
 import {
   BusFront,
   CircleDollarSign,
@@ -48,7 +48,10 @@ function formatCurrency(amount: number) {
 }
 
 export default function ExpenseTrackerPage() {
-  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [expenses, setExpenses] = useState<Expense[]>(() => {
+    const saved = localStorage.getItem('expenses');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState<Category>('Food');
@@ -58,7 +61,10 @@ export default function ExpenseTrackerPage() {
     () => expenses.reduce((sum, expense) => sum + expense.amount, 0),
     [expenses],
   );
-
+  useEffect(() => {
+    localStorage.setItem('expenses' , JSON.stringify(expenses));
+  }, [expenses]);
+  
   const addExpense = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const trimmedDescription = description.trim();
