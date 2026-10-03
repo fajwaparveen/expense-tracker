@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState, type CSSProperties, type FormEvent } from 'react';
 import {
   BusFront,
-  CircleDollarSign,
   MoreHorizontal,
+  Pencil,
   Plus,
   ReceiptText,
   ShoppingBag,
@@ -38,7 +38,7 @@ const categoryConfig: Record<Category, CategoryConfig> = {
   Other: { icon: MoreHorizontal, color: 'hsl(39 55% 48%)' },
 };
 
-const currencyFormatter = new Intl.NumberFormat('en-US', {
+const currencyFormatter = new Intl.NumberFormat('en-IN', {
   style: 'currency',
   currency: 'INR',
 });
@@ -49,13 +49,19 @@ function formatCurrency(amount: number) {
 
 export default function ExpenseTrackerPage() {
   const [expenses, setExpenses] = useState<Expense[]>(() => {
+    try{
     const saved = localStorage.getItem('my-expenses');
     return saved ? JSON.parse(saved) : [];
+    } catch {
+      return[];
+    }
   });
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState<Category>('Food');
   const [error, setError] = useState('');
+  const [editingId, setEditingId] = useState<number | null>(null);
+  
 
   const total = useMemo(
     () => expenses.reduce((sum, expense) => sum + expense.amount, 0),
@@ -79,6 +85,15 @@ export default function ExpenseTrackerPage() {
       setError('Enter an amount greater than zero.');
       return;
     }
+    if (editingId !== null){
+      setExpenses ((currentExpenses) =>
+        currentExpenses.map((expense) =>
+          expense.id === editingId
+            ?{ ...expense ,description: trimmedDescription, amount: parsedAmount , category}
+          : expense,
+        ),
+      );
+    } else {
 
     const newExpense: Expense = {
       id: Date.now(),
@@ -92,7 +107,25 @@ export default function ExpenseTrackerPage() {
       }),
     };
 
-    setExpenses((currentExpenses) => [...currentExpenses, newExpense]);
+    setExpenses((currentExpenses) => [newExpense , ...currentExpenses]);
+    }
+    setEditingId(null);
+    setDescription('');
+    setAmount('');
+    setCategory('Food');
+    setError('');
+  };
+
+  const startEdit = (expense: Expense) => {
+    setEditingId(expense.id);
+    setDescription(expense.description);
+    setAmount(String(expense.amount));
+    setCategory(expense.category);
+    setError('');
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
     setDescription('');
     setAmount('');
     setCategory('Food');
@@ -217,8 +250,15 @@ export default function ExpenseTrackerPage() {
 
             <button className="submit-button" data-testid="button-add-expense" type="submit">
               <Plus size={17} strokeWidth={2.6} aria-hidden="true" />
-              Add expense
+              {editingId !== null ? 'Save changes' : 'Add expense'}
             </button>
+            
+            {editingId !== null ? (
+              <button className="submit-button" type="button" onClick={cancelEdit}>
+                Cancel
+              </button>
+            ) : null}
+            
           </form>
 
           <section className="panel list-panel" aria-labelledby="recent-expenses-title">
@@ -265,15 +305,25 @@ export default function ExpenseTrackerPage() {
                       </div>
                       <span className="expense-category">{expense.category}</span>
                       <strong className="expense-amount">{formatCurrency(expense.amount)}</strong>
-                      <button
-                        className="delete-button"
-                        data-testid={`button-delete-expense-${expense.id}`}
-                        type="button"
-                        aria-label={`Delete ${expense.description}`}
-                        onClick={() => deleteExpense(expense.id)}
-                      >
-                        <Trash2 size={16} strokeWidth={2} aria-hidden="true" />
-                      </button>
+                      <div style={{ display: 'flex', gap: '4px' }}>
+                        <button
+                          className="delete-button"
+                          type="button"
+                          aria-label={`Edit ${expense.description}`}
+                          onClick={() => startEdit(expense)}
+                        >
+                          <Pencil size={16} strokeWidth={2} aria-hidden="true" />
+                        </button>
+                        <button
+                          className="delete-button"
+                          data-testid={`button-delete-expense-${expense.id}`}
+                          type="button"
+                          aria-label={`Delete ${expense.description}`}
+                          onClick={() => deleteExpense(expense.id)}
+                        >
+                          <Trash2 size={16} strokeWidth={2} aria-hidden="true" />
+                        </button>
+                      </div>
                     </article>
                   );
                 })}
